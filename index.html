@@ -1,0 +1,135 @@
+```html
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>ساعدني نهضر</title>
+
+<style>
+body {
+  font-family: Arial;
+  margin: 0;
+  background: #f5f7fb;
+  text-align: center;
+}
+
+h1 {
+  padding: 15px;
+}
+
+.container {
+  padding: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.back {
+  margin: 15px;
+  padding: 10px 20px;
+  border: none;
+  background: #333;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="title">شنو بغيتي؟</h1>
+
+<div class="container">
+
+  <!-- Categories -->
+  <div id="categories" class="grid">
+    <div class="card" onclick="openCategory('food')">🍔 ماكلة</div>
+    <div class="card" onclick="openCategory('feelings')">😊 مشاعر</div>
+    <div class="card" onclick="openCategory('pain')">🤕 ألم</div>
+    <div class="card" onclick="openCategory('needs')">🗣️ طلبات</div>
+  </div>
+
+  <!-- Words -->
+  <div id="words" class="grid" style="display:none;"></div>
+
+  <button id="backBtn" class="back" onclick="goBack()" style="display:none;">رجوع</button>
+
+</div>
+
+<script>
+const data = {
+  food: [
+    { text: "بغيت ناكل", emoji: "🍔" },
+    { text: "بغيت نشرب", emoji: "🥤" },
+    { text: "بغيت حليب", emoji: "🥛" },
+    { text: "بغيت فاكهة", emoji: "🍎" }
+  ],
+  feelings: [
+    { text: "فرحان", emoji: "😊" },
+    { text: "حزين", emoji: "😢" },
+    { text: "خايف", emoji: "😨" },
+    { text: "معصب", emoji: "😡" }
+  ],
+  pain: [
+    { text: "كنحس بالألم", emoji: "🤕" },
+    { text: "راسي كيضرني", emoji: "🧠" },
+    { text: "كرشي كيضرني", emoji: "😖" }
+  ],
+  needs: [
+    { text: "بغيت نمشي للحمام", emoji: "🚻" },
+    { text: "بغيت نعس", emoji: "😴" },
+    { text: "بغيت نلعب", emoji: "🎮" }
+  ]
+};
+
+function speak(text) {
+  let msg = new SpeechSynthesisUtterance(text);
+  msg.lang = "ar-SA"; // تقدر تبدلها
+  speechSynthesis.speak(msg);
+}
+
+function openCategory(cat) {
+  document.getElementById("categories").style.display = "none";
+  document.getElementById("words").style.display = "grid";
+  document.getElementById("backBtn").style.display = "block";
+
+  const wordsDiv = document.getElementById("words");
+  wordsDiv.innerHTML = "";
+
+  data[cat].forEach(item => {
+    const div = document.createElement("div");
+    div.className = "card";
+    div.innerHTML = `${item.emoji} <br>${item.text}`;
+    div.onclick = () => speak(item.text);
+    wordsDiv.appendChild(div);
+  });
+}
+
+function goBack() {
+  document.getElementById("categories").style.display = "grid";
+  document.getElementById("words").style.display = "none";
+  document.getElementById("backBtn").style.display = "none";
+}
+</script>
+
+</body>
+</html>
+```
